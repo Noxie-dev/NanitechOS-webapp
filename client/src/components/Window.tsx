@@ -84,6 +84,19 @@ const Window: React.FC<WindowProps> = ({
     onMove(constrained);
   };
 
+  // Skip rendering if minimized
+  if (isMinimized) {
+    return null;
+  }
+
+  const handleMaximizeClick = () => {
+    if (isMaximized) {
+      onRestore();
+    } else {
+      onMaximize();
+    }
+  };
+
   return (
     <Draggable
       nodeRef={nodeRef}
@@ -91,10 +104,11 @@ const Window: React.FC<WindowProps> = ({
       position={position}
       onStop={handleDragStop}
       onMouseDown={onFocus}
+      disabled={isMaximized} // Disable dragging when maximized
     >
       <motion.div
         ref={nodeRef}
-        className={`os-window ${isFocused ? 'ring-1 ring-accent/50' : ''}`}
+        className={`os-window ${isFocused ? 'ring-1 ring-accent/50' : ''} ${isMaximized ? 'maximized' : ''}`}
         initial={{ opacity: 0, scale: 0.95, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 10 }}
@@ -106,14 +120,26 @@ const Window: React.FC<WindowProps> = ({
         }}
       >
         <div className="window-header">
-          <div className="window-title">
-            {getIconByName(icon, { size: 'sm', className: 'text-light' })}
+          <div className="window-title" onDoubleClick={handleMaximizeClick}>
+            {getIconByName(icon, { size: 'sm', className: 'text-white' })}
             <span>{title}</span>
           </div>
           <div className="window-controls">
-            <button className="control-button minimize-btn"></button>
-            <button className="control-button maximize-btn"></button>
-            <button className="control-button close-btn" onClick={onClose}></button>
+            <button 
+              className="control-button minimize-btn" 
+              onClick={onMinimize}
+              title="Minimize"
+            ></button>
+            <button 
+              className="control-button maximize-btn" 
+              onClick={handleMaximizeClick}
+              title={isMaximized ? "Restore" : "Maximize"}
+            ></button>
+            <button 
+              className="control-button close-btn" 
+              onClick={onClose}
+              title="Close"
+            ></button>
           </div>
         </div>
         <div className="window-content">{children}</div>

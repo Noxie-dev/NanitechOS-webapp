@@ -17,7 +17,10 @@ const Desktop: React.FC = () => {
     openWindow, 
     closeWindow, 
     focusWindow, 
-    moveWindow
+    moveWindow,
+    minimizeWindow,
+    maximizeWindow,
+    restoreWindow
   } = useAppState();
   const [desktopSize, setDesktopSize] = useState({
     width: window.innerWidth,
@@ -81,9 +84,14 @@ const Desktop: React.FC = () => {
             size={window.size}
             zIndex={window.zIndex}
             isFocused={window.isFocused}
+            isMinimized={window.isMinimized}
+            isMaximized={window.isMaximized}
             onClose={() => closeWindow(window.id)}
             onFocus={() => focusWindow(window.id)}
             onMove={(position) => moveWindow(window.id, position)}
+            onMinimize={() => minimizeWindow(window.id)}
+            onMaximize={() => maximizeWindow(window.id)}
+            onRestore={() => restoreWindow(window.id)}
             desktopSize={desktopSize}
           >
             {getWindowContent(window.id)}
