@@ -8,6 +8,7 @@ import Launchpad from '../apps/Launchpad';
 import NaniAssist from '../apps/NaniAssist';
 import Settings from '../apps/Settings';
 import { backgrounds } from '../assets/backgrounds';
+import { useIsMobile } from '../hooks/use-mobile';
 
 const Desktop: React.FC = () => {
   const { 
@@ -22,6 +23,8 @@ const Desktop: React.FC = () => {
     maximizeWindow,
     restoreWindow
   } = useAppState();
+  
+  const isMobile = useIsMobile();
   const [desktopSize, setDesktopSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight
@@ -39,6 +42,17 @@ const Desktop: React.FC = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+  
+  // Force maximize windows on mobile
+  useEffect(() => {
+    if (isMobile) {
+      windows.forEach(window => {
+        if (window.isOpen && !window.isMaximized) {
+          maximizeWindow(window.id);
+        }
+      });
+    }
+  }, [isMobile, windows]);
 
   // Map window IDs to content components
   const getWindowContent = (windowId: string) => {
@@ -80,38 +94,41 @@ const Desktop: React.FC = () => {
             id={window.id}
             title={window.title}
             icon={window.icon}
-            position={window.position}
-            size={window.size}
+            position={isMobile ? { x: 0, y: 0 } : window.position}
+            size={isMobile ? { width: desktopSize.width, height: desktopSize.height - 40 } : window.size}
             zIndex={window.zIndex}
             isFocused={window.isFocused}
             isMinimized={window.isMinimized}
-            isMaximized={window.isMaximized}
+            isMaximized={isMobile ? true : window.isMaximized}
             onClose={() => closeWindow(window.id)}
             onFocus={() => focusWindow(window.id)}
             onMove={(position) => moveWindow(window.id, position)}
-            onMinimize={() => minimizeWindow(window.id)}
-            onMaximize={() => maximizeWindow(window.id)}
-            onRestore={() => restoreWindow(window.id)}
+            onMinimize={isMobile ? () => {} : () => minimizeWindow(window.id)} 
+            onMaximize={isMobile ? () => {} : () => maximizeWindow(window.id)}
+            onRestore={isMobile ? () => {} : () => restoreWindow(window.id)}
             desktopSize={desktopSize}
+            isMobileDevice={isMobile}
           >
             {getWindowContent(window.id)}
           </Window>
         )
       ))}
 
-      {/* Dock */}
-      <Dock 
-        onItemClick={(id) => {
-          const window = windows.find(w => w.id === id);
-          if (window) {
-            if (window.isOpen) {
-              focusWindow(id);
-            } else {
-              openWindow(id);
+      {/* Dock - hidden in mobile if a window is open and in focus */}
+      {(!isMobile || !windows.some(w => w.isOpen && w.isFocused)) && (
+        <Dock 
+          onItemClick={(id) => {
+            const window = windows.find(w => w.id === id);
+            if (window) {
+              if (window.isOpen) {
+                focusWindow(id);
+              } else {
+                openWindow(id);
+              }
             }
-          }
-        }}
-      />
+          }}
+        />
+      )}
     </div>
   );
 };
