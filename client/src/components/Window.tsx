@@ -12,10 +12,15 @@ interface WindowProps {
   size: { width: number; height: number };
   zIndex: number;
   isFocused: boolean;
+  isMinimized: boolean;
+  isMaximized: boolean;
   children: React.ReactNode;
   onClose: () => void;
   onFocus: () => void;
   onMove: (position: { x: number; y: number }) => void;
+  onMinimize: () => void;
+  onMaximize: () => void;
+  onRestore: () => void;
   desktopSize: { width: number; height: number };
 }
 
@@ -27,10 +32,15 @@ const Window: React.FC<WindowProps> = ({
   size,
   zIndex,
   isFocused,
+  isMinimized,
+  isMaximized,
   children,
   onClose,
   onFocus,
   onMove,
+  onMinimize,
+  onMaximize,
+  onRestore,
   desktopSize
 }) => {
   const nodeRef = useRef<HTMLDivElement>(null);
