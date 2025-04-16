@@ -85,7 +85,7 @@ export default function Search({ className }: SearchProps) {
     const parts = text.split(regex);
     
     return parts.map((part, i) => 
-      regex.test(part) ? <mark key={i} className="bg-yellow-200 text-black px-0.5 rounded">{part}</mark> : part
+      regex.test(part) ? <mark key={i} className="bg-accent/20 text-accent font-medium px-0.5 rounded-sm">{part}</mark> : part
     );
   };
 
@@ -115,47 +115,56 @@ export default function Search({ className }: SearchProps) {
           <SearchIcon className="h-5 w-5 text-light" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[700px] p-0 overflow-hidden">
-        <div className="flex flex-col h-[80vh] bg-background">
+      <DialogContent 
+        className="sm:max-w-[700px] p-0 overflow-hidden bg-transparent border-none" 
+        aria-labelledby="dialog-title"
+        aria-describedby="dialog-description"
+      >
+        <div className="flex flex-col h-[80vh] bg-black/80 backdrop-blur-md text-light rounded-lg">
+          {/* This is for accessibility, visually hidden */}
+          <div className="sr-only" id="dialog-title">Search NaniOS</div>
+          <div className="sr-only" id="dialog-description">Search across all content in NaniOS</div>
+          
           {/* Search input - Google-like */}
-          <div className="p-4 border-b">
-            <div className="flex items-center gap-2 bg-muted rounded-full px-4 py-2">
-              <SearchIcon className="h-5 w-5 text-muted-foreground" />
+          <div className="p-4 border-b border-white/10">
+            <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
+              <SearchIcon className="h-5 w-5 text-light/70" />
               <input
-                className="flex-1 bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground"
+                className="flex-1 bg-transparent border-none outline-none text-light placeholder:text-light/50"
                 placeholder="Search NaniOS..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 autoFocus
+                aria-labelledby="dialog-title"
               />
               {searchQuery && (
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="h-6 w-6 p-0 rounded-full" 
+                  className="h-6 w-6 p-0 rounded-full text-light/70 hover:text-light hover:bg-white/10" 
                   onClick={() => setSearchQuery('')}
                 >
                   ×
                 </Button>
               )}
             </div>
-            <div className="text-xs text-muted-foreground mt-2 flex justify-between">
+            <div className="text-xs text-light/50 mt-2 flex justify-between">
               <span>Press ESC to close</span>
               <span>{searchResults.length} results</span>
             </div>
           </div>
 
           {/* Search results - Google-like */}
-          <div className="flex-1 overflow-y-auto p-4">
+          <div className="flex-1 overflow-y-auto p-4 text-light">
             {isLoading ? (
               <div className="flex justify-center items-center h-24">
-                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-accent"></div>
               </div>
             ) : searchResults.length > 0 ? (
               <div className="space-y-6">
                 {searchResults.map((result) => (
                   <div key={result.id} className="search-result">
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-2 text-xs text-light/60">
                       <span>{getTypeIcon(result.type)}</span>
                       <span className="capitalize">{result.type}</span>
                       {result.category && (
@@ -167,16 +176,16 @@ export default function Search({ className }: SearchProps) {
                     </div>
                     
                     <a href={result.url} className="block mt-1 group" onClick={() => setIsOpen(false)}>
-                      <h3 className="text-base font-medium text-blue-600 group-hover:underline">
+                      <h3 className="text-base font-medium text-accent group-hover:underline">
                         {formatSnippet(result.title, debouncedQuery)}
                       </h3>
-                      <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+                      <p className="text-sm text-light/70 line-clamp-2 mt-1">
                         {formatSnippet(result.snippet || result.content.substring(0, 150) + '...', debouncedQuery)}
                       </p>
                     </a>
                     
                     {result.imageUrl && (
-                      <div className="mt-2 rounded overflow-hidden w-16 h-16 bg-muted">
+                      <div className="mt-2 rounded overflow-hidden w-16 h-16 bg-black/30">
                         <img 
                           src={result.imageUrl} 
                           alt={result.title} 
@@ -190,8 +199,8 @@ export default function Search({ className }: SearchProps) {
             ) : searchQuery.trim() !== '' && (
               <div className="text-center py-10">
                 <div className="text-5xl mb-4">🔍</div>
-                <h3 className="text-lg font-medium mb-2">No results found</h3>
-                <p className="text-muted-foreground text-sm">
+                <h3 className="text-lg font-medium mb-2 text-light">No results found</h3>
+                <p className="text-light/70 text-sm">
                   Try searching with different keywords or browse the applications.
                 </p>
               </div>
