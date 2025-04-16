@@ -1,0 +1,213 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Custom variables for NaniOS */
+  :root {
+    --primary: #2a3d52;
+    --secondary: #3c6382;
+    --accent: #00a8ff;
+    --dark: #1a2634;
+    --light: #f5f6fa;
+    --light-secondary: #c8d6e5;
+    --success: #2ed573;
+    --error: #ff4757;
+    --warning: #ffa502;
+  }
+}
+
+@layer components {
+  /* OS Window styles */
+  .os-window {
+    @apply fixed bg-primary/85 backdrop-blur-md rounded-lg shadow-lg overflow-hidden flex flex-col;
+    animation: fadeIn 0.25s ease-out forwards, slideUp 0.25s ease-out forwards;
+  }
+
+  .window-header {
+    @apply bg-primary/90 h-10 flex justify-between items-center px-3 cursor-move;
+  }
+
+  .window-title {
+    @apply font-semibold text-sm text-white flex items-center gap-2;
+  }
+
+  .window-content {
+    @apply p-4 flex-1 overflow-auto;
+  }
+
+  .window-controls {
+    @apply flex gap-2;
+  }
+
+  .control-button {
+    @apply w-3 h-3 rounded-full border-0 cursor-pointer transition-transform hover:scale-110;
+  }
+
+  .close-btn {
+    @apply bg-error;
+  }
+
+  .minimize-btn {
+    @apply bg-warning;
+  }
+
+  .maximize-btn {
+    @apply bg-success;
+  }
+
+  /* Top bar styles */
+  .top-bar {
+    @apply fixed top-0 left-0 w-full h-8 bg-dark/75 backdrop-blur-md flex justify-between items-center px-4 z-10;
+  }
+
+  /* Dock styles */
+  .dock-container {
+    @apply fixed bottom-4 left-1/2 transform -translate-x-1/2 z-10;
+  }
+
+  .dock {
+    @apply bg-dark/60 backdrop-blur-xl rounded-2xl p-2 flex gap-1.5 shadow-lg;
+  }
+
+  .dock-item {
+    @apply w-12 h-12 rounded-xl flex justify-center items-center cursor-pointer relative transition-all duration-200 ease-out bg-white/10;
+  }
+
+  .dock-item:hover {
+    @apply transform scale-110 -translate-y-1 bg-white/15;
+  }
+
+  .dock-item:active {
+    @apply transform scale-95;
+  }
+
+  .dock-icon {
+    @apply w-8 h-8 object-contain;
+  }
+
+  /* Sidebar styles */
+  .sidebar-nav {
+    @apply w-48 p-2 border-r border-gray-700/50;
+  }
+
+  .sidebar-item {
+    @apply flex items-center gap-2.5 p-2 rounded-md cursor-pointer transition hover:bg-white/10;
+  }
+
+  .sidebar-item.active {
+    @apply bg-accent/20;
+  }
+
+  /* Launchpad grid */
+  .launchpad-grid {
+    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4;
+  }
+
+  .app-item {
+    @apply flex flex-col items-center justify-center gap-2 cursor-pointer p-2 rounded-lg transition hover:bg-white/10 hover:-translate-y-0.5;
+  }
+
+  .app-icon {
+    @apply w-12 h-12 rounded-xl flex justify-center items-center bg-white/10;
+  }
+
+  .app-name {
+    @apply text-xs text-center text-white;
+  }
+
+  /* Terminal styles */
+  .terminal-content {
+    @apply font-mono text-sm bg-black/30 p-3 rounded-md h-full;
+  }
+
+  .terminal-line {
+    @apply mb-1.5 flex;
+  }
+
+  .terminal-prompt {
+    @apply text-accent mr-2;
+  }
+
+  /* Settings grid */
+  .settings-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+  }
+
+  .settings-card {
+    @apply bg-white/5 rounded-lg p-4 flex flex-col gap-3;
+  }
+
+  .settings-header {
+    @apply flex items-center gap-2 font-medium;
+  }
+
+  /* Toggle switch */
+  .toggle-switch {
+    @apply relative inline-block w-10 h-5;
+  }
+
+  .toggle-slider {
+    @apply absolute cursor-pointer inset-0 bg-white/20 transition-all duration-300 rounded-full;
+  }
+
+  .toggle-slider:before {
+    @apply absolute content-[''] h-4 w-4 left-0.5 bottom-0.5 bg-white transition-all duration-300 rounded-full;
+  }
+
+  input:checked + .toggle-slider {
+    @apply bg-accent;
+  }
+
+  input:checked + .toggle-slider:before {
+    @apply transform translate-x-5;
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(20px); }
+    to { transform: translateY(0); }
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dock-item {
+    @apply w-12 h-12;
+  }
+  
+  .dock-icon {
+    @apply w-6 h-6;
+  }
+  
+  .os-window {
+    @apply w-[90vw] h-[80vh] left-[5vw] top-[10vh];
+  }
+  
+  .launchpad-grid {
+    @apply grid-cols-2 sm:grid-cols-3;
+  }
+  
+  .settings-grid {
+    @apply grid-cols-1;
+  }
+}
