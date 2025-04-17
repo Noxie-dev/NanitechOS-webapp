@@ -330,3 +330,41 @@
     @apply text-[10px];
   }
 }
+
+/* Special modes */
+/* Airplane mode */
+.airplane-mode * {
+  transition-duration: 0s !important;
+  animation-duration: 0s !important;
+}
+
+.airplane-mode .os-window {
+  @apply !shadow-none !bg-opacity-100;
+}
+
+.airplane-mode .dock {
+  @apply !bg-opacity-100 !blur-none;
+}
+
+.airplane-mode img {
+  @apply !hidden;
+}
+
+.airplane-mode .launchpad-grid {
+  @apply gap-1;
+}
+
+.airplane-mode .app-item {
+  @apply !transform-none;
+}
+
+/* Shutting down animation */
+.shutting-down {
+  animation: shutdown 2s ease-in forwards;
+}
+
+@keyframes shutdown {
+  0% { filter: brightness(1); }
+  70% { filter: brightness(1); }
+  100% { filter: brightness(0); }
+}
