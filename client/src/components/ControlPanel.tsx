@@ -52,11 +52,11 @@ const ControlPanel = () => {
   
   // Social profiles for WiFi modal
   const socialProfiles: SocialProfile[] = [
-    { name: 'Twitter', url: 'https://twitter.com/nanitech', icon: <i className="fa-brands fa-twitter"></i>, strength: 4 },
-    { name: 'LinkedIn', url: 'https://linkedin.com/company/nanitech', icon: <i className="fa-brands fa-linkedin"></i>, strength: 3 },
-    { name: 'GitHub', url: 'https://github.com/nanitech', icon: <i className="fa-brands fa-github"></i>, strength: 4 },
-    { name: 'Instagram', url: 'https://instagram.com/nanitechofficial', icon: <i className="fa-brands fa-instagram"></i>, strength: 2 },
-    { name: 'YouTube', url: 'https://youtube.com/c/nanitech', icon: <i className="fa-brands fa-youtube"></i>, strength: 1 },
+    { name: 'Twitter', url: 'https://twitter.com/nanitech', icon: <span>𝕏</span>, strength: 4 },
+    { name: 'LinkedIn', url: 'https://linkedin.com/company/nanitech', icon: <span>in</span>, strength: 3 },
+    { name: 'GitHub', url: 'https://github.com/nanitech', icon: <span>⌨️</span>, strength: 4 },
+    { name: 'Instagram', url: 'https://instagram.com/nanitechofficial', icon: <span>📸</span>, strength: 2 },
+    { name: 'YouTube', url: 'https://youtube.com/c/nanitech', icon: <span>▶️</span>, strength: 1 },
   ];
   
   // Departments for Bluetooth modal
@@ -190,13 +190,13 @@ const ControlPanel = () => {
       <div className="flex items-center">
         <Button
           variant="ghost"
-          size="icon"
-          className="rounded-full hover:bg-white/10 relative text-light"
+          size="sm"
+          className="rounded-full hover:bg-black/20 relative text-light px-3 py-1 h-auto"
           onClick={() => setIsPanelOpen(!isPanelOpen)}
         >
-          <div className="flex items-center gap-1 px-3 py-1 rounded-full bg-zinc-800/80">
+          <div className="flex items-center gap-1.5">
             <Battery className="h-4 w-4" />
-            <span className="text-xs">{batteryLevel}%</span>
+            <span className="text-xs font-medium">{batteryLevel}%</span>
           </div>
         </Button>
       </div>
