@@ -3,6 +3,7 @@ import { formatTime, formatDate } from '../lib/os-utils';
 import { NaniLogo } from '../assets/Icons';
 import { useAppState } from '../hooks/use-app-state';
 import Search from './Search';
+import ControlPanel from './ControlPanel';
 import { useIsMobile } from '../hooks/use-mobile';
 
 const TopBar: React.FC = () => {
@@ -42,6 +43,9 @@ const TopBar: React.FC = () => {
             )}
           </span>
         </div>
+        
+        {/* Control Panel */}
+        <ControlPanel />
       </div>
     </div>
   );
