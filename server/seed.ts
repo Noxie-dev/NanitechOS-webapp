@@ -13,8 +13,30 @@ export async function seedDatabase() {
 
   // Check if we already have seed data to avoid duplicates
   const [existingUser] = await db.select().from(users).where(eq(users.username, "admin"));
+  
   if (existingUser) {
-    console.log("Database already seeded, skipping...");
+    console.log("Database already seeded, updating content...");
+    await db.update(content).set({
+      content: `NaniTech was founded with a clear mission: to build intelligent digital products that solve real problems and scale with purpose — especially in fast-growing, high-impact markets.
+
+Rooted in the African tech ecosystem and inspired by global innovation, we work at the intersection of SaaS, startups, and AI-driven development. We understand the realities founders and businesses face: limited resources, high expectations, and the need to move fast without breaking what matters.
+
+That’s why our approach is both innovative and practical.
+
+We design and build apps, web apps, and websites either:
+• AI-first, from the ground up, where intelligence is part of the foundation
+• Or by meaningfully integrating AI into existing platforms, enhancing performance, productivity, and decision-making without unnecessary disruption
+
+AI, for us, is not hype. It’s a tool — one we use deliberately to help our clients:
+• Increase productivity and efficiency
+• Unlock new revenue streams
+• Improve customer experience and engagement
+• Scale sustainably in competitive markets
+
+We build with startups in mind and SaaS at heart — focusing on clean architecture, scalability, and long-term value. Every solution is crafted to grow with the business, adapt to change, and stay relevant in a rapidly evolving digital landscape.
+
+At NaniTech, we believe African innovation belongs on the global stage. We build technology that reflects that belief — bold, intelligent, and built for impact.`
+    }).where(eq(content.title, "Our Story"));
     return;
   }
 
@@ -120,9 +142,27 @@ export async function seedDatabase() {
     const contentEntries = await db.insert(content).values([
       {
         type: "article",
-        title: "Welcome to NaniOS",
-        description: "Learn about the features of our innovative operating system",
-        content: "NaniOS is a cutting-edge web-based operating system designed to showcase NaniTech's technological capabilities...",
+        title: "Our Story",
+        description: "The journey of NaniTech",
+        content: `NaniTech was founded with a clear mission: to build intelligent digital products that solve real problems and scale with purpose — especially in fast-growing, high-impact markets.
+
+Rooted in the African tech ecosystem and inspired by global innovation, we work at the intersection of SaaS, startups, and AI-driven development. We understand the realities founders and businesses face: limited resources, high expectations, and the need to move fast without breaking what matters.
+
+That’s why our approach is both innovative and practical.
+
+We design and build apps, web apps, and websites either:
+• AI-first, from the ground up, where intelligence is part of the foundation
+• Or by meaningfully integrating AI into existing platforms, enhancing performance, productivity, and decision-making without unnecessary disruption
+
+AI, for us, is not hype. It’s a tool — one we use deliberately to help our clients:
+• Increase productivity and efficiency
+• Unlock new revenue streams
+• Improve customer experience and engagement
+• Scale sustainably in competitive markets
+
+We build with startups in mind and SaaS at heart — focusing on clean architecture, scalability, and long-term value. Every solution is crafted to grow with the business, adapt to change, and stay relevant in a rapidly evolving digital landscape.
+
+At NaniTech, we believe African innovation belongs on the global stage. We build technology that reflects that belief — bold, intelligent, and built for impact.`,
         imageUrl: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b",
         category: "general"
       },
@@ -151,4 +191,12 @@ export async function seedDatabase() {
     console.error("Error seeding database:", error);
     throw error;
   }
+}
+
+// Only execute if run directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  seedDatabase().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
 }
