@@ -28,13 +28,33 @@ const NaniVault: React.FC = () => {
     switch (activeSection) {
       case 'story':
         return (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold mb-4 text-light">Our Story</h2>
-            {storyParagraphs.map((paragraph, index) => (
-              <p key={index} className="text-light-secondary">
-                {paragraph}
-              </p>
-            ))}
+          <div className="space-y-6 pb-8">
+            <h2 className="text-2xl font-bold mb-6 text-light border-b border-accent/30 pb-2">Our Story</h2>
+            <div className="space-y-4">
+              {storyParagraphs.map((paragraph, index) => {
+                if (paragraph.includes('•') || paragraph.includes('- ')) {
+                  const lines = paragraph.split('\n').filter(l => l.trim());
+                  return (
+                    <ul key={index} className="space-y-2 ml-4">
+                      {lines.map((line, i) => (
+                        <li key={i} className="text-light-secondary flex items-start gap-2">
+                          <span className="text-accent mt-1.5">•</span>
+                          <span>{line.replace(/^[•-]\s*/, '')}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  );
+                }
+                
+                const isHeading = paragraph.length < 100 && (paragraph.includes(':') || paragraph.toLowerCase().includes('approach') || paragraph.toLowerCase().includes('ai, for us'));
+                
+                return (
+                  <p key={index} className={`${isHeading ? 'text-lg font-semibold text-accent mt-4' : 'text-light-secondary leading-relaxed'}`}>
+                    {paragraph}
+                  </p>
+                );
+              })}
+            </div>
           </div>
         );
 
