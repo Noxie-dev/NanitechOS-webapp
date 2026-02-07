@@ -38,7 +38,7 @@ const NaniVault: React.FC = () => {
                     <ul key={index} className="space-y-2 ml-4">
                       {lines.map((line, i) => (
                         <li key={i} className="text-light-secondary flex items-start gap-2">
-                          <span className="text-accent mt-1.5">•</span>
+                          <span className="text-warning mt-1.5">•</span>
                           <span>{line.replace(/^[•-]\s*/, '')}</span>
                         </li>
                       ))}
@@ -49,7 +49,7 @@ const NaniVault: React.FC = () => {
                 const isHeading = paragraph.length < 100 && (paragraph.includes(':') || paragraph.toLowerCase().includes('approach') || paragraph.toLowerCase().includes('ai, for us'));
                 
                 return (
-                  <p key={index} className={`${isHeading ? 'text-lg font-semibold text-accent mt-4' : 'text-light-secondary leading-relaxed'}`}>
+                  <p key={index} className={`${isHeading ? 'text-lg font-semibold text-warning mt-4' : 'text-light-secondary leading-relaxed'}`}>
                     {paragraph}
                   </p>
                 );
