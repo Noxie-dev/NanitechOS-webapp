@@ -44,6 +44,7 @@ export interface AppState {
     team: { name: string; position: string }[];
     values: { name: string; description: string }[];
     mission: string;
+    teamContent?: string;
   };
   openWindow: (id: string) => void;
   closeWindow: (id: string) => void;
