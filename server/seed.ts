@@ -45,24 +45,41 @@ We exist to turn ideas into scalable platforms and to transform existing systems
     }).where(eq(content.title, "Our Mission"));
 
     await db.update(content).set({
-      content: `1. Purpose Before Hype
-We don’t use technology for show. Every tool, feature, and AI integration must serve a clear purpose and deliver real value.
+      content: `NaniTech is founder-led and builder-driven.
 
-2. Build Smart, Build Right
-Clean architecture, scalable systems, and long-term thinking guide everything we build. Shortcuts today create problems tomorrow — we avoid them.
+At its core is a hands-on technologist and strategist who believes that software should do more than function — it should solve real problems, unlock opportunity, and create measurable impact.
 
-3. Innovation With Context
-We build for real people, real markets, and real constraints. Especially in emerging and fast-growing ecosystems, practicality matters as much as innovation.
+What started as a deep curiosity about systems, platforms, and digital ecosystems evolved into a focused mission: to build intelligent SaaS products that improve productivity, expand access, and generate real value for businesses and users alike.
 
-4. AI as an Enabler
-AI is not a replacement for people — it’s a force multiplier. We use it to enhance productivity, improve decision-making, and unlock new possibilities.
+A Builder’s Mindset
+I approach development as both a technical challenge and a strategic opportunity. Whether architecting a web platform, integrating AI into an existing system, or designing a product from the ground up, I focus on:
+• Clean, scalable foundations
+• Thoughtful system architecture
+• Practical innovation over hype
+• Long-term sustainability over shortcuts
 
-5. Partnership Over Projects
-We don’t just deliver and disappear. We collaborate closely with our clients, treating their goals as our own and growing alongside them.
+Every feature must earn its place. Every integration must serve a purpose.
 
-6. African-Rooted, Globally Competitive
-We believe world-class technology can be built from Africa. Our work reflects global standards while embracing local insight and ambition.`
-    }).where(eq(content.title, "Our Values"));
+AI With Intention
+AI isn’t an add-on — it’s a capability. I believe in building AI-powered systems that are meaningful, not superficial. That means:
+• Automating intelligently
+• Enhancing decision-making
+• Improving operational efficiency
+• Increasing revenue potential
+• Strengthening competitive advantage
+
+From AI-first applications to smart integrations within existing platforms, the goal is always the same: make technology work harder so people can work smarter.
+
+Entrepreneurial and Execution-Focused
+Building in emerging and high-growth markets requires resilience, adaptability, and strategic thinking. I understand the realities of startups — limited resources, ambitious goals, and the need to move quickly without sacrificing quality.
+
+NaniTech reflects that mindset: lean, deliberate, and focused on building products that scale.
+
+While NaniTech collaborates with partners and specialists when needed, it is guided by a strong, hands-on leadership approach — ensuring every solution meets high standards of innovation, performance, and impact.
+
+This isn’t just development.
+It’s building intelligent systems with purpose.`
+    }).where(eq(content.title, "Team"));
 
     return;
   }

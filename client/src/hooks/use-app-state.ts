@@ -126,7 +126,41 @@ We build with startups in mind and SaaS at heart — focusing on clean architect
 At NaniTech, we believe African innovation belongs on the global stage. We build technology that reflects that belief — bold, intelligent, and built for impact.`,
       team: [],
       values: [],
-      mission: ''
+      mission: '',
+      teamContent: `NaniTech is founder-led and builder-driven.
+
+At its core is a hands-on technologist and strategist who believes that software should do more than function — it should solve real problems, unlock opportunity, and create measurable impact.
+
+What started as a deep curiosity about systems, platforms, and digital ecosystems evolved into a focused mission: to build intelligent SaaS products that improve productivity, expand access, and generate real value for businesses and users alike.
+
+A Builder’s Mindset
+I approach development as both a technical challenge and a strategic opportunity. Whether architecting a web platform, integrating AI into an existing system, or designing a product from the ground up, I focus on:
+• Clean, scalable foundations
+• Thoughtful system architecture
+• Practical innovation over hype
+• Long-term sustainability over shortcuts
+
+Every feature must earn its place. Every integration must serve a purpose.
+
+AI With Intention
+AI isn’t an add-on — it’s a capability. I believe in building AI-powered systems that are meaningful, not superficial. That means:
+• Automating intelligently
+• Enhancing decision-making
+• Improving operational efficiency
+• Increasing revenue potential
+• Strengthening competitive advantage
+
+From AI-first applications to smart integrations within existing platforms, the goal is always the same: make technology work harder so people can work smarter.
+
+Entrepreneurial and Execution-Focused
+Building in emerging and high-growth markets requires resilience, adaptability, and strategic thinking. I understand the realities of startups — limited resources, ambitious goals, and the need to move quickly without sacrificing quality.
+
+NaniTech reflects that mindset: lean, deliberate, and focused on building products that scale.
+
+While NaniTech collaborates with partners and specialists when needed, it is guided by a strong, hands-on leadership approach — ensuring every solution meets high standards of innovation, performance, and impact.
+
+This isn’t just development.
+It’s building intelligent systems with purpose.`
     }
   });
 

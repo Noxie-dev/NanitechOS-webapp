@@ -4,6 +4,8 @@ import { getIconByName } from '../assets/Icons';
 import { useAppState } from '../hooks/use-app-state';
 import { useQuery } from '@tanstack/react-query';
 
+import founderImg from "../assets/founder.jpg";
+
 interface VaultItem {
   id: string;
   icon: string;
@@ -28,6 +30,7 @@ const NaniVault: React.FC = () => {
   const storyContent = contents?.find(c => c.title === "Our Story")?.content || "";
   const missionContent = contents?.find(c => c.title === "Our Mission")?.content || "";
   const valuesContent = contents?.find(c => c.title === "Our Values")?.content || "";
+  const teamContent = contents?.find(c => c.title === "Team")?.content || companyInfo.teamContent || "";
 
   const formatContent = (text: string) => {
     return text.split('\n\n').filter(p => p.trim()).map((paragraph, index) => {
@@ -86,15 +89,60 @@ const NaniVault: React.FC = () => {
 
       case 'team':
         return (
-          <div>
-            <h2 className="text-xl font-semibold mb-4 text-light">Our Team</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {companyInfo.team.map((member, index) => (
-                <div key={index} className="bg-dark/50 p-3 rounded-lg">
-                  <h3 className="font-medium text-accent">{member.name}</h3>
-                  <p className="text-sm text-light-secondary">{member.position}</p>
+          <div className="space-y-8 pb-8">
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-accent to-warning rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+              <div className="relative bg-dark/80 rounded-2xl overflow-hidden border border-white/10">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+                  <div className="h-[300px] md:h-full relative overflow-hidden">
+                    <img 
+                      src={founderImg} 
+                      alt="NaniTech Founder" 
+                      className="absolute inset-0 w-full h-full object-cover object-center grayscale hover:grayscale-0 transition-all duration-700 scale-105 hover:scale-100"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-dark via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:to-dark/80"></div>
+                  </div>
+                  <div className="p-8 flex flex-col justify-center space-y-4">
+                    <div className="inline-block px-3 py-1 rounded-full bg-warning/20 border border-warning/30 text-warning text-xs font-bold tracking-widest uppercase mb-2">
+                      Founder & Lead Builder
+                    </div>
+                    <h2 className="text-3xl font-black text-white tracking-tight">
+                      Architecting <span className="text-warning">Impact</span>
+                    </h2>
+                    <p className="text-light-secondary text-sm leading-relaxed italic border-l-2 border-accent/50 pl-4">
+                      "This isn’t just development. It’s building intelligent systems with purpose."
+                    </p>
+                  </div>
                 </div>
-              ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12">
+              <div className="lg:col-span-8 space-y-6">
+                {formatContent(teamContent)}
+              </div>
+              <div className="lg:col-span-4 space-y-6">
+                <div className="bg-accent/5 border border-accent/20 rounded-xl p-6 backdrop-blur-sm">
+                  <h3 className="text-accent font-bold mb-4 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                    Current Focus
+                  </h3>
+                  <ul className="space-y-3 text-sm text-light-secondary">
+                    <li className="flex items-center gap-2">
+                      <div className="w-1 h-1 rounded-full bg-accent"></div>
+                      SaaS Product Architecture
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="w-1 h-1 rounded-full bg-accent"></div>
+                      Strategic AI Integration
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="w-1 h-1 rounded-full bg-accent"></div>
+                      Emerging Market Scalability
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         );
