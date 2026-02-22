@@ -27,8 +27,8 @@ const NaniVault: React.FC = () => {
     queryKey: ['/api/content'],
   });
 
-  const storyContent = contents?.find(c => c.title === "Our Story")?.content || "";
-  const missionContent = contents?.find(c => c.title === "Our Mission")?.content || "";
+  const storyContent = contents?.find(c => c.title === "Our Story")?.content || companyInfo.story || "";
+  const missionContent = contents?.find(c => c.title === "Our Mission")?.content || companyInfo.mission || "";
   const valuesContent = contents?.find(c => c.title === "Our Values")?.content || "";
   const teamContent = contents?.find(c => c.title === "Team")?.content || companyInfo.teamContent || "";
 
