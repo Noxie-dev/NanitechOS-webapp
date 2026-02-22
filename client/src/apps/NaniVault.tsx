@@ -21,39 +21,65 @@ const NaniVault: React.FC = () => {
     { id: 'mission', icon: 'rocket', title: 'Mission' }
   ];
 
-  // Split paragraphs for story content
-  const storyParagraphs = companyInfo.story.split('\n\n').filter(p => p.trim());
+  const { data: contents, isLoading } = useQuery<any[]>({
+    queryKey: ['/api/content'],
+  });
+
+  const storyContent = contents?.find(c => c.title === "Our Story")?.content || "";
+  const missionContent = contents?.find(c => c.title === "Our Mission")?.content || "";
+  const valuesContent = contents?.find(c => c.title === "Our Values")?.content || "";
+
+  const formatContent = (text: string) => {
+    return text.split('\n\n').filter(p => p.trim()).map((paragraph, index) => {
+      if (paragraph.includes('•') || paragraph.includes('- ') || /^\d+\./.test(paragraph)) {
+        const lines = paragraph.split('\n').filter(l => l.trim());
+        return (
+          <ul key={index} className="space-y-2 ml-4">
+            {lines.map((line, i) => {
+              const isNumber = /^\d+\./.test(line);
+              return (
+                <li key={i} className="text-light-secondary flex items-start gap-2">
+                  <span className="text-warning mt-1.5 min-w-[1.2rem]">{isNumber ? line.split('.')[0] + '.' : '•'}</span>
+                  <span>{isNumber ? line.replace(/^\d+\.\s*/, '') : line.replace(/^[•-]\s*/, '')}</span>
+                </li>
+              );
+            })}
+          </ul>
+        );
+      }
+      
+      const isHeading = paragraph.length < 100 && (
+        paragraph.includes(':') || 
+        paragraph.toLowerCase().includes('approach') || 
+        paragraph.toLowerCase().includes('ai, for us') ||
+        paragraph.toLowerCase().includes('our mission') ||
+        paragraph.toLowerCase().includes('our values')
+      );
+      
+      return (
+        <p key={index} className={`${isHeading ? 'text-lg font-semibold text-warning mt-4' : 'text-light-secondary leading-relaxed'}`}>
+          {paragraph}
+        </p>
+      );
+    });
+  };
 
   const renderContent = () => {
+    if (isLoading) {
+      return (
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
+        </div>
+      );
+    }
+
     switch (activeSection) {
       case 'story':
         return (
           <div className="space-y-6 pb-8">
             <h2 className="text-2xl font-bold mb-6 text-light border-b border-accent/30 pb-2">Our Story</h2>
             <div className="space-y-4">
-              {storyParagraphs.map((paragraph, index) => {
-                if (paragraph.includes('•') || paragraph.includes('- ')) {
-                  const lines = paragraph.split('\n').filter(l => l.trim());
-                  return (
-                    <ul key={index} className="space-y-2 ml-4">
-                      {lines.map((line, i) => (
-                        <li key={i} className="text-light-secondary flex items-start gap-2">
-                          <span className="text-warning mt-1.5">•</span>
-                          <span>{line.replace(/^[•-]\s*/, '')}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  );
-                }
-                
-                const isHeading = paragraph.length < 100 && (paragraph.includes(':') || paragraph.toLowerCase().includes('approach') || paragraph.toLowerCase().includes('ai, for us'));
-                
-                return (
-                  <p key={index} className={`${isHeading ? 'text-lg font-semibold text-warning mt-4' : 'text-light-secondary leading-relaxed'}`}>
-                    {paragraph}
-                  </p>
-                );
-              })}
+              {formatContent(storyContent)}
             </div>
           </div>
         );
@@ -75,36 +101,21 @@ const NaniVault: React.FC = () => {
 
       case 'values':
         return (
-          <div>
-            <h2 className="text-xl font-semibold mb-4 text-light">Our Values</h2>
+          <div className="space-y-6 pb-8">
+            <h2 className="text-2xl font-bold mb-6 text-light border-b border-accent/30 pb-2">Our Values</h2>
             <div className="space-y-4">
-              {companyInfo.values.map((value, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <div className="bg-accent/20 p-2 rounded-md">
-                    {getIconByName('idea', { className: 'text-accent' })}
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-light">{value.name}</h3>
-                    <p className="text-sm text-light-secondary">{value.description}</p>
-                  </div>
-                </div>
-              ))}
+              {formatContent(valuesContent)}
             </div>
           </div>
         );
 
       case 'mission':
         return (
-          <div>
-            <h2 className="text-xl font-semibold mb-4 text-light">Our Mission</h2>
-            <div className="bg-dark/50 p-4 rounded-lg mb-4">
-              <p className="text-light-secondary italic">
-                {companyInfo.mission.split('\n\n')[0]}
-              </p>
+          <div className="space-y-6 pb-8">
+            <h2 className="text-2xl font-bold mb-6 text-light border-b border-accent/30 pb-2">Our Mission</h2>
+            <div className="space-y-4">
+              {formatContent(missionContent)}
             </div>
-            <p className="text-light-secondary">
-              {companyInfo.mission.split('\n\n')[1]}
-            </p>
           </div>
         );
 

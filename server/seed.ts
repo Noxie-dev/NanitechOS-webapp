@@ -37,6 +37,33 @@ We build with startups in mind and SaaS at heart — focusing on clean architect
 
 At NaniTech, we believe African innovation belongs on the global stage. We build technology that reflects that belief — bold, intelligent, and built for impact.`
     }).where(eq(content.title, "Our Story"));
+
+    await db.update(content).set({
+      content: `To design and build intelligent digital products that help businesses and startups work smarter, scale faster, and create meaningful impact — by combining thoughtful engineering, creative problem-solving, and practical AI integration.
+
+We exist to turn ideas into scalable platforms and to transform existing systems into more productive, revenue-driven, and future-ready solutions.`
+    }).where(eq(content.title, "Our Mission"));
+
+    await db.update(content).set({
+      content: `1. Purpose Before Hype
+We don’t use technology for show. Every tool, feature, and AI integration must serve a clear purpose and deliver real value.
+
+2. Build Smart, Build Right
+Clean architecture, scalable systems, and long-term thinking guide everything we build. Shortcuts today create problems tomorrow — we avoid them.
+
+3. Innovation With Context
+We build for real people, real markets, and real constraints. Especially in emerging and fast-growing ecosystems, practicality matters as much as innovation.
+
+4. AI as an Enabler
+AI is not a replacement for people — it’s a force multiplier. We use it to enhance productivity, improve decision-making, and unlock new possibilities.
+
+5. Partnership Over Projects
+We don’t just deliver and disappear. We collaborate closely with our clients, treating their goals as our own and growing alongside them.
+
+6. African-Rooted, Globally Competitive
+We believe world-class technology can be built from Africa. Our work reflects global standards while embracing local insight and ambition.`
+    }).where(eq(content.title, "Our Values"));
+
     return;
   }
 
