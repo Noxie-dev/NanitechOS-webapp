@@ -27,9 +27,9 @@ const TopBar: React.FC = () => {
         <img
           src={logoImg}
           alt="NaniTech logo"
-          className="h-6 w-auto object-contain"
+          className="h-8 w-auto object-contain drop-shadow-lg"
         />
-        <span className="text-light font-medium text-sm">NaniOS</span>
+        <span className="text-light font-semibold text-base tracking-wide">NaniOS</span>
       </div>
       
       <div className="flex items-center gap-2 md:gap-4">
