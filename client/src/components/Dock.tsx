@@ -62,12 +62,12 @@ const Dock: React.FC<DockProps> = ({ onItemClick }) => {
                 <AnimatePresence>
                   {isHovered && settings.dockSettings.showLabels && (
                     <motion.div
-                      initial={{ opacity: 0, y: -5 }}
-                      animate={{ opacity: 1, y: -35 }}
-                      exit={{ opacity: 0, y: -5 }}
-                      className="absolute left-1/2 transform -translate-x-1/2 bg-secondary/90 text-light py-1 px-2.5 rounded text-xs whitespace-nowrap"
-                      style={{ pointerEvents: 'none' }}
-                    >
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: -35 }}
+                    exit={{ opacity: 0, y: -5 }}
+                    className="absolute left-1/2 transform -translate-x-1/2 bg-secondary/90 text-white py-1 px-2.5 rounded text-xs whitespace-nowrap"
+                    style={{ pointerEvents: 'none' }}
+                  >
                       {app.tooltip}
                     </motion.div>
                   )}
