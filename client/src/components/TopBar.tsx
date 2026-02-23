@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { formatTime, formatDate } from '../lib/os-utils';
 import { NaniLogo } from '../assets/Icons';
+import logoImg from '@/assets/nanitech-logo.png';
 import { useAppState } from '../hooks/use-app-state';
 import Search from './Search';
 import ControlPanel from './ControlPanel';
@@ -23,7 +24,11 @@ const TopBar: React.FC = () => {
   return (
     <div className={`top-bar ${isMobile ? 'mobile-top-bar' : ''}`}>
       <div className="flex items-center gap-2">
-        <NaniLogo size={isMobile ? 'sm' : 'sm'} className="text-accent" />
+        <img
+          src={logoImg}
+          alt="NaniTech logo"
+          className="h-6 w-auto object-contain"
+        />
         <span className="text-light font-medium text-sm">NaniOS</span>
       </div>
       
