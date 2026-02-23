@@ -70,6 +70,8 @@ const Desktop: React.FC = () => {
     }
   };
 
+  const isLogoWallpaper = wallpaper.includes('nanitech-logo');
+
   return (
     <div 
       className="desktop-environment"
@@ -78,8 +80,10 @@ const Desktop: React.FC = () => {
         width: '100vw',
         height: '100vh',
         backgroundImage: `url("${wallpaper}")`,
-        backgroundSize: 'cover',
+        backgroundSize: isLogoWallpaper ? '40%' : 'cover',
+        backgroundRepeat: isLogoWallpaper ? 'no-repeat' : 'repeat',
         backgroundPosition: 'center',
+        backgroundColor: isLogoWallpaper ? '#0b1021' : undefined,
         overflow: 'hidden',
         position: 'relative'
       }}

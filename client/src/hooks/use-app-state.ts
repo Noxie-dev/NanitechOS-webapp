@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
+import logoWallpaper from "@/assets/nanitech-logo.png";
 
 // Define the window type
 export interface WindowState {
@@ -65,7 +66,7 @@ const AppStateContext = createContext<AppState | undefined>(undefined);
 export const AppStateProvider = ({ children }: { children: ReactNode }) => {
   const [activeWindowId, setActiveWindowId] = useState<string | null>(null);
   const [zIndexCounter, setZIndexCounter] = useState(100);
-  const [wallpaper, setWallpaper] = useState<string>('https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&q=80&w=1600&ixlib=rb-4.0.3');
+  const [wallpaper, setWallpaper] = useState<string>(logoWallpaper);
 
   // Fetch settings
   const { data: settingsData } = useQuery({
