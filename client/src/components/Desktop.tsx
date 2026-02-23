@@ -7,6 +7,8 @@ import NaniVault from '../apps/NaniVault';
 import Launchpad from '../apps/Launchpad';
 import NaniAssist from '../apps/NaniAssist';
 import Settings from '../apps/Settings';
+import Services from '../apps/Services';
+import ActivityBin from '../apps/ActivityBin';
 import { backgrounds } from '../assets/backgrounds';
 import { useIsMobile } from '../hooks/use-mobile';
 
@@ -65,6 +67,10 @@ const Desktop: React.FC = () => {
         return <NaniAssist />;
       case 'settings':
         return <Settings />;
+      case 'services':
+        return <Services />;
+      case 'activity':
+        return <ActivityBin />;
       default:
         return <div>Window content not found</div>;
     }

@@ -215,6 +215,30 @@ It’s building intelligent systems with purpose.`
       position: { x: 0, y: 0 },
       size: { width: 750, height: 520 },
       zIndex: 10
+    },
+    {
+      id: 'services',
+      title: 'Services',
+      icon: 'services',
+      isOpen: false,
+      isFocused: false,
+      isMinimized: false,
+      isMaximized: false,
+      position: { x: 0, y: 0 },
+      size: { width: 860, height: 560 },
+      zIndex: 10
+    },
+    {
+      id: 'activity',
+      title: 'Activity Bin',
+      icon: 'bin',
+      isOpen: false,
+      isFocused: false,
+      isMinimized: false,
+      isMaximized: false,
+      position: { x: 0, y: 0 },
+      size: { width: 900, height: 620 },
+      zIndex: 10
     }
   ]);
 
@@ -223,6 +247,8 @@ It’s building intelligent systems with purpose.`
     { id: 'vault', title: 'NaniVault', icon: 'folder', tooltip: 'NaniVault' },
     { id: 'launchpad', title: 'Launchpad', icon: 'apps', tooltip: 'Launchpad' },
     { id: 'assist', title: 'NaniAssist', icon: 'terminal', tooltip: 'NaniAssist' },
+    { id: 'services', title: 'Services', icon: 'services', tooltip: 'Services' },
+    { id: 'activity', title: 'Activity Bin', icon: 'bin', tooltip: 'Recent Activity' },
     { id: 'settings', title: 'Settings', icon: 'settings', tooltip: 'Settings' }
   ];
 
