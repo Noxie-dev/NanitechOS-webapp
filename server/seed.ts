@@ -5,7 +5,8 @@ import {
   wallpapers, 
   apps, 
   settings, 
-  content 
+  content,
+  services
 } from "@shared/schema";
 
 export async function seedDatabase() {
@@ -315,6 +316,46 @@ We believe world-class technology can be built from Africa. Our work reflects gl
       }
     ]).returning();
     console.log(`Added ${contentEntries.length} content items`);
+
+    // 6. Seed services catalog
+    const servicesSeed = [
+      {
+        title: "AI Product Design",
+        description: "Futuristic, intuitive interfaces built from the ground up. We design for the modern web, ensuring your users experience seamless, captivating journeys.",
+        icon: "Sparkles",
+        color: "from-[#00a8ff]/20 to-transparent",
+        borderColor: "group-hover:border-[#00a8ff]/50",
+        isActive: true,
+      },
+      {
+        title: "Custom SaaS & Apps",
+        description: "Robust, scalable software architecture. We build web and mobile applications that don't just function, but dominate their market spaces.",
+        icon: "Code2",
+        color: "from-[#3c6382]/30 to-transparent",
+        borderColor: "group-hover:border-[#3c6382]/50",
+        isActive: true,
+      },
+      {
+        title: "Applied AI Integration",
+        description: "Moving beyond the 'noise' of AI. We integrate real, useful artificial intelligence to solve actual business problems and increase your ROI.",
+        icon: "Cpu",
+        color: "from-teal-500/20 to-transparent",
+        borderColor: "group-hover:border-teal-500/50",
+        isActive: true,
+      },
+      {
+        title: "Platform Modernization",
+        description: "Transform legacy systems into high-performance, modern tech stacks. Future-proof your business with cutting-edge runtime and cloud integrations.",
+        icon: "Layers",
+        color: "from-purple-500/20 to-transparent",
+        borderColor: "group-hover:border-purple-500/50",
+        isActive: true,
+      }
+    ];
+
+    await db.delete(services); // reset for idempotent dev seeding
+    const servicesEntries = await db.insert(services).values(servicesSeed).returning();
+    console.log(`Added ${servicesEntries.length} services`);
 
     console.log("✅ Database seeding completed successfully!");
 

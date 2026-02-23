@@ -2,8 +2,10 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { db } from "./db";
-import { content, users, wallpapers, apps, settings } from "@shared/schema";
+import { content, users, wallpapers, apps, settings, services, behavioralEvents } from "@shared/schema";
 import { eq, like, or, desc } from "drizzle-orm";
+import crypto from "crypto";
+import rateLimit from "express-rate-limit";
 
 // Initial data for the OS
 const companyInfo = {
@@ -29,18 +31,95 @@ At NaniTech, we are driven by the belief that technology should be accessible, i
 };
 
 const launchpadApps = [
-  { id: 1, name: "Blog", icon: "document", category: "content" },
-  { id: 2, name: "Projects", icon: "plus-circle", category: "portfolio" },
-  { id: 3, name: "Resources", icon: "file", category: "content" },
-  { id: 4, name: "Analytics", icon: "chart", category: "tools" },
-  { id: 5, name: "Demo", icon: "video", category: "portfolio" },
-  { id: 6, name: "News", icon: "clock", category: "content" },
-  { id: 7, name: "Contact", icon: "mail", category: "help" },
-  { id: 8, name: "Features", icon: "sparkles", category: "info" }
+  // Desktop apps mirrored here
+  { id: 1, name: "NaniVault", icon: "folder", category: "workspace", windowId: "vault" },
+  { id: 2, name: "NaniAssist", icon: "terminal", category: "tools", windowId: "assist" },
+  { id: 3, name: "Services", icon: "services", category: "delivery", windowId: "services" },
+  { id: 4, name: "Activity Bin", icon: "bin", category: "activity", windowId: "activity" },
+  { id: 5, name: "Settings", icon: "settings", category: "system", windowId: "settings" },
+  // Content/marketing surfaces
+  { id: 6, name: "Blog", icon: "blog", category: "content", windowId: "blog" },
+  { id: 7, name: "News", icon: "news", category: "content", windowId: "news" },
+  // Extras / placeholders
+  { id: 8, name: "Projects", icon: "plus-circle", category: "portfolio" },
+  { id: 9, name: "Resources", icon: "file", category: "content" },
+  { id: 10, name: "Analytics", icon: "chart", category: "tools" },
+  { id: 11, name: "Demo", icon: "video", category: "portfolio" },
+  { id: 12, name: "Contact", icon: "mail", category: "help" },
+  { id: 13, name: "Features", icon: "sparkles", category: "info" }
 ];
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // API routes
+
+  const requireAuth = (req: any, res: any, next: any) => {
+    // Simple guard: replace with real auth when available
+    const authorized = Boolean(req.headers["x-authenticated"] || req.headers.cookie?.includes("session="));
+    if (!authorized) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    next();
+  };
+
+  const analyticsLimiter = rateLimit({
+    windowMs: 60_000,
+    max: 60,
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+
+  const signals = [
+    {
+      id: 1,
+      title: "The Future of Machine Learning in Africa",
+      summary: "Opportunities and constraints for deploying AI on the continent — infra, data, and talent flywheels.",
+      tag: "AI",
+      eta: "6 min read",
+      featured: true,
+    },
+    {
+      id: 2,
+      title: "Scaling Your SaaS Startup",
+      summary: "A systems view on growth loops, pricing levers, and product velocity.",
+      tag: "SaaS",
+      eta: "5 min read",
+    },
+    {
+      id: 3,
+      title: "Building Robust API Systems",
+      summary: "Contracts, versioning, and resilience patterns for modern teams.",
+      tag: "Dev",
+      eta: "4 min read",
+    },
+    {
+      id: 4,
+      title: "The Power of Lean Innovation",
+      summary: "Iteration as a strategic advantage when markets shift fast.",
+      tag: "Strategy",
+      eta: "4 min read",
+    },
+    {
+      id: 5,
+      title: "Ethics in AI",
+      summary: "Practical guardrails for applied intelligence work.",
+      tag: "AI",
+      eta: "3 min read",
+    },
+    {
+      id: 6,
+      title: "Fintech in Africa",
+      summary: "What’s working in emerging ecosystems — rails, risk, reach.",
+      tag: "Case Study",
+      eta: "5 min read",
+    },
+    {
+      id: 7,
+      title: "Unlocking Business Agility",
+      summary: "Adaptation patterns for teams in fast-paced environments.",
+      tag: "Case Study",
+      eta: "6 min read",
+    },
+  ];
 
   // Company Info endpoint
   app.get('/api/company-info', (req, res) => {
@@ -103,6 +182,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
         showDate: true
       }
     });
+  });
+
+  // Services catalog
+  app.get('/api/services', requireAuth, async (_req, res) => {
+    try {
+      const activeServices = await db
+        .select()
+        .from(services)
+        .where(eq(services.isActive, true))
+        .orderBy(services.id);
+
+      res.json(activeServices);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+      res.status(500).json({ message: 'Failed to fetch services' });
+    }
+  });
+
+  // Behavioral analytics ingest
+  app.post('/api/behavioral-events', analyticsLimiter, requireAuth, async (req, res) => {
+    try {
+      const { pageKey, events, sessionId } = req.body as { pageKey?: string; sessionId?: string; events?: Array<{ type: string; data?: Record<string, unknown>; ts: number }> };
+
+      if (!pageKey || !Array.isArray(events) || events.length === 0) {
+        return res.status(400).json({ message: 'Invalid payload' });
+      }
+
+      const resolvedSessionId = sessionId || crypto.randomUUID();
+
+      const rows = events.map(evt => ({
+        sessionId: resolvedSessionId,
+        pageKey,
+        eventType: evt.type,
+        data: evt.data ?? null,
+        createdAt: new Date(evt.ts || Date.now())
+      }));
+
+      await db.insert(behavioralEvents).values(rows);
+
+      res.json({ sessionId: resolvedSessionId, stored: rows.length });
+    } catch (error) {
+      console.error('Error ingesting behavioral events:', error);
+      res.status(500).json({ message: 'Failed to store events' });
+    }
+  });
+
+  // Blog signals (public for now)
+  app.get('/api/signals', (_req, res) => {
+    res.json(signals);
   });
 
   app.post('/api/settings', (req, res) => {

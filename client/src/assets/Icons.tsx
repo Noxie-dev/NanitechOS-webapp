@@ -22,8 +22,10 @@ import {
   AcademicCapIcon,
   ArrowRightIcon,
   BriefcaseIcon,
-  TrashIcon
+  TrashIcon,
+  BookOpenIcon as OutlineBookOpenIcon
 } from '@heroicons/react/24/outline';
+import { NewspaperIcon as OutlineNewspaperIcon } from '@heroicons/react/24/outline';
 
 export interface IconProps {
   className?: string;
@@ -89,6 +91,10 @@ export const getIconByName = (name: string, props: IconProps = {}): React.ReactE
       return <BriefcaseIcon className={combinedClassName} />;
     case 'bin':
       return <TrashIcon className={combinedClassName} />;
+    case 'blog':
+      return <OutlineBookOpenIcon className={combinedClassName} />;
+    case 'news':
+      return <OutlineNewspaperIcon className={combinedClassName} />;
     default:
       return <div className={combinedClassName}>?</div>;
   }

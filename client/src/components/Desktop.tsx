@@ -9,6 +9,8 @@ import NaniAssist from '../apps/NaniAssist';
 import Settings from '../apps/Settings';
 import Services from '../apps/Services';
 import ActivityBin from '../apps/ActivityBin';
+import Blog from '../apps/Blog';
+import News from '../apps/News';
 import { backgrounds } from '../assets/backgrounds';
 import { useIsMobile } from '../hooks/use-mobile';
 
@@ -71,6 +73,10 @@ const Desktop: React.FC = () => {
         return <Services />;
       case 'activity':
         return <ActivityBin />;
+      case 'blog':
+        return <Blog />;
+      case 'news':
+        return <News />;
       default:
         return <div>Window content not found</div>;
     }

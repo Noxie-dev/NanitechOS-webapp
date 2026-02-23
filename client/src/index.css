@@ -344,30 +344,32 @@
 }
 
 /* Special modes */
-/* Airplane mode */
-.airplane-mode * {
-  transition-duration: 0s !important;
-  animation-duration: 0s !important;
-}
+@layer components {
+  /* Airplane mode */
+  .airplane-mode * {
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+  }
 
-.airplane-mode .os-window {
-  @apply !shadow-none !bg-opacity-100;
-}
+  .airplane-mode .os-window {
+    @apply !shadow-none !bg-opacity-100;
+  }
 
-.airplane-mode .dock {
-  @apply !bg-opacity-100 !blur-none;
-}
+  .airplane-mode .dock {
+    @apply !bg-opacity-100 !blur-none;
+  }
 
-.airplane-mode img {
-  @apply !hidden;
-}
+  .airplane-mode img {
+    @apply !hidden;
+  }
 
-.airplane-mode .launchpad-grid {
-  @apply gap-1;
-}
+  .airplane-mode .launchpad-grid {
+    @apply gap-1;
+  }
 
-.airplane-mode .app-item {
-  @apply !transform-none;
+  .airplane-mode .app-item {
+    @apply !transform-none;
+  }
 }
 
 /* Shutting down animation */
@@ -379,4 +381,18 @@
   0% { filter: brightness(1); }
   70% { filter: brightness(1); }
   100% { filter: brightness(0); }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #3c6382;
+  border-radius: 20px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #00a8ff;
 }

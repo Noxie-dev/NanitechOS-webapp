@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, jsonb, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -50,6 +50,27 @@ export const content = pgTable("content", {
   category: text("category"),
 });
 
+// Services catalog
+export const services = pgTable("services", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  icon: text("icon").notNull(), // Lucide icon name, e.g. "Sparkles"
+  color: text("color").notNull(), // Tailwind gradient class
+  borderColor: text("border_color").notNull(), // Tailwind border hover class
+  isActive: boolean("is_active").default(true).notNull(),
+});
+
+// Behavioral analytics events (per session)
+export const behavioralEvents = pgTable("behavioral_events", {
+  id: serial("id").primaryKey(),
+  sessionId: text("session_id").notNull(),
+  pageKey: text("page_key").notNull(),
+  eventType: text("event_type").notNull(),
+  data: jsonb("data"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
@@ -87,3 +108,9 @@ export type Settings = typeof settings.$inferSelect;
 
 export type InsertContent = z.infer<typeof insertContentSchema>;
 export type Content = typeof content.$inferSelect;
+
+export type Service = typeof services.$inferSelect;
+export type InsertService = typeof services.$inferInsert;
+
+export type BehavioralEvent = typeof behavioralEvents.$inferSelect;
+export type InsertBehavioralEvent = typeof behavioralEvents.$inferInsert;

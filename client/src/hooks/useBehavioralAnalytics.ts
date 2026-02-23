@@ -14,6 +14,7 @@ interface InteractionMetrics {
   hoverCount: number;
   interactiveClicks: number;
   sectionMetrics: Record<string, SectionMetrics>;
+  events: Array<{ type: string; data?: Record<string, unknown>; ts: number }>;
 }
 
 export interface AnalyticsResult {
@@ -29,6 +30,8 @@ export interface AnalyticsResult {
 export function useBehavioralAnalytics(pageKey: string = "default") {
   const [showModal, setShowModal] = useState(false);
   const [analyticsResult, setAnalyticsResult] = useState<AnalyticsResult | null>(null);
+  const [eventLog, setEventLog] = useState<Array<{ type: string; data?: Record<string, unknown>; ts: number }>>([]);
+  const [sessionId, setSessionId] = useState<string | null>(null);
   
   const metricsRef = useRef<InteractionMetrics>({
     pageStartTime: Date.now(),
@@ -37,7 +40,8 @@ export function useBehavioralAnalytics(pageKey: string = "default") {
     clickCount: 0,
     hoverCount: 0,
     interactiveClicks: 0,
-    sectionMetrics: {}
+    sectionMetrics: {},
+    events: []
   });
 
   // Reset metrics when the pageKey changes (e.g., route change)
@@ -49,10 +53,13 @@ export function useBehavioralAnalytics(pageKey: string = "default") {
       clickCount: 0,
       hoverCount: 0,
       interactiveClicks: 0,
-      sectionMetrics: {}
+      sectionMetrics: {},
+      events: []
     };
     setShowModal(false);
     setAnalyticsResult(null);
+    setEventLog([]);
+    setSessionId(null);
   }, [pageKey]);
 
   useEffect(() => {
@@ -136,6 +143,8 @@ export function useBehavioralAnalytics(pageKey: string = "default") {
       const result = computeResults(metrics);
       setAnalyticsResult(result);
       setShowModal(true);
+      metrics.events.push({ type: 'aie_modal_shown', ts: Date.now(), data: result as unknown as Record<string, unknown> });
+      setEventLog([...metrics.events]);
     };
 
     const handleMouseLeave = (e: MouseEvent) => {
@@ -163,7 +172,60 @@ export function useBehavioralAnalytics(pageKey: string = "default") {
     };
   }, [showModal]);
 
-  return { showModal, setShowModal, analyticsResult };
+  const trackEvent = (type: string, data?: Record<string, unknown>) => {
+    const next = { type, data, ts: Date.now() };
+    metricsRef.current.events.push(next);
+    setEventLog([...metricsRef.current.events]);
+  };
+
+  const flushEvents = async () => {
+    if (metricsRef.current.events.length === 0) return;
+    try {
+      const res = await fetch('/api/behavioral-events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          pageKey,
+          sessionId,
+          events: metricsRef.current.events,
+        }),
+      });
+
+      if (!res.ok) throw new Error(await res.text());
+
+      const body = await res.json();
+      if (body.sessionId && !sessionId) setSessionId(body.sessionId);
+      // clear events after successful send
+      metricsRef.current.events = [];
+    } catch (err) {
+      console.error('Failed to flush behavioral events', err);
+    }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      flushEvents();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [sessionId]);
+
+  useEffect(() => {
+    const beforeUnload = () => {
+      navigator.sendBeacon(
+        '/api/behavioral-events',
+        new Blob([
+          JSON.stringify({ pageKey, sessionId, events: metricsRef.current.events })
+        ], { type: 'application/json' })
+      );
+    };
+
+    window.addEventListener('beforeunload', beforeUnload);
+    return () => window.removeEventListener('beforeunload', beforeUnload);
+  }, [sessionId]);
+
+  return { showModal, setShowModal, analyticsResult, trackEvent, eventLog, sessionId };
 }
 
 function normalizeTime(seconds: number) {

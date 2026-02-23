@@ -2,17 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { getIconByName } from '../assets/Icons';
 import { useQuery } from '@tanstack/react-query';
+import { useAppState } from '../hooks/use-app-state';
 
 interface AppItem {
   id: number;
   name: string;
   icon: string;
   category: string;
+  windowId?: string;
 }
 
 const Launchpad: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filteredApps, setFilteredApps] = useState<AppItem[]>([]);
+  const { openWindow } = useAppState();
 
   // Fetch app data
   const { data: apps = [] } = useQuery<AppItem[]>({
@@ -83,6 +86,12 @@ const Launchpad: React.FC = () => {
               className="app-item"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.98 }}
+              onClick={() => {
+                const winId = app.windowId ?? app.name.toLowerCase();
+                if (winId) openWindow(winId);
+              }}
+              role="button"
+              tabIndex={0}
             >
               <div className={`app-icon ${getIconBackground(app.icon)}`}>
                 {getIconByName(app.icon)}

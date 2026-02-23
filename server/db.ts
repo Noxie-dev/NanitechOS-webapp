@@ -24,7 +24,7 @@ if (isLocalPg) {
 } else {
   neonConfig.webSocketConstructor = ws;
   pool = new NeonPool({ connectionString });
-  db = drizzleNeon({ client: pool, schema });
+  db = drizzleNeon(connectionString, { schema });
 }
 
 export { pool, db };

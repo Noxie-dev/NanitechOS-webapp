@@ -239,6 +239,30 @@ It’s building intelligent systems with purpose.`
       position: { x: 0, y: 0 },
       size: { width: 900, height: 620 },
       zIndex: 10
+    },
+    {
+      id: 'blog',
+      title: 'Blog',
+      icon: 'blog',
+      isOpen: false,
+      isFocused: false,
+      isMinimized: false,
+      isMaximized: false,
+      position: { x: 0, y: 0 },
+      size: { width: 900, height: 640 },
+      zIndex: 10
+    },
+    {
+      id: 'news',
+      title: 'News',
+      icon: 'news',
+      isOpen: false,
+      isFocused: false,
+      isMinimized: false,
+      isMaximized: false,
+      position: { x: 0, y: 0 },
+      size: { width: 900, height: 640 },
+      zIndex: 10
     }
   ]);
 
@@ -249,6 +273,8 @@ It’s building intelligent systems with purpose.`
     { id: 'assist', title: 'NaniAssist', icon: 'terminal', tooltip: 'NaniAssist' },
     { id: 'services', title: 'Services', icon: 'services', tooltip: 'Services' },
     { id: 'activity', title: 'Activity Bin', icon: 'bin', tooltip: 'Recent Activity' },
+    { id: 'blog', title: 'Blog', icon: 'blog', tooltip: 'Blog' },
+    { id: 'news', title: 'News', icon: 'news', tooltip: 'News' },
     { id: 'settings', title: 'Settings', icon: 'settings', tooltip: 'Settings' }
   ];
 
