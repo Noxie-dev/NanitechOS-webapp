@@ -80,10 +80,9 @@ const Desktop: React.FC = () => {
         width: '100vw',
         height: '100vh',
         backgroundImage: `url("${wallpaper}")`,
-        backgroundSize: isLogoWallpaper ? '40%' : 'cover',
+        backgroundSize: isLogoWallpaper ? 'contain' : 'cover',
         backgroundRepeat: isLogoWallpaper ? 'no-repeat' : 'repeat',
         backgroundPosition: 'center',
-        backgroundColor: isLogoWallpaper ? '#0b1021' : undefined,
         overflow: 'hidden',
         position: 'relative'
       }}
