@@ -6,6 +6,7 @@ import { AppStateProvider } from "./hooks/use-app-state";
 import MobileDetector from "./components/MobileDetector";
 import { Route, Switch } from "wouter";
 import Shutdown from "./pages/shutdown";
+import ServicesPage from "./pages/ServicesPage";
 
 function App() {
   return (
@@ -16,9 +17,10 @@ function App() {
         
         <Switch>
           <Route path="/shutdown" component={Shutdown} />
+          <Route path="/services" component={ServicesPage} />
           <Route path="/" component={Desktop} />
         </Switch>
-        
+
         <Toaster />
       </AppStateProvider>
     </QueryClientProvider>
